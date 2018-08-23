@@ -1,0 +1,55 @@
+@startuml
+
+(RuleRunner) ..> (RuleCompiler) : compile
+(sql_rule) --> (RuleCompiler) : compiled
+(dataSource) --> (RuleRunner) : request
+(RuleRunner) --> (RuleHandlerChain) : run
+(RuleHandlerChain) --> (RuleHandler)
+(RuleHandler) --> (response) : doHandle
+
+(RuleCompiler) ..> (Field) : FieldStrategy
+(RuleCompiler) ..> (Condition) : ConditionStrategy
+(RuleCompiler) ..> (DataSource)
+
+(Field) ..> (RuleInfo)
+(Condition) ..> (RuleInfo)
+(DataSource) ..> (RuleInfo)
+
+(dataSource) --> (RuleInfoContext)
+(RuleInfo) --> (RuleInfoContext)
+(RuleInfoContext) --> (RuleHandler)
+
+
+
+@enduml
+
+@startuml
+
+interface FieldStrategy
+interface ConditionStrategy
+
+ComplierContext *-- ConditionStrategy
+ComplierContext *-- FieldStrategy
+
+FieldStrategy <|-- FieldArithStrategy
+FieldStrategy <|-- FieldCaseStrategy
+FieldStrategy <|-- FieldFunctionStrategy
+FieldStrategy <|-- FieldSimpleStrategy
+
+ConditionStrategy <|-- ConditionCompareStrategy
+ConditionStrategy <|-- ConditionInStrategy
+ConditionStrategy <|-- ConditionLikeStrategy
+
+class RuleCompiler{
+    ParseTreeProperty<ConditionWrapper> conditionTree
+    ParseTreeProperty<ConditionItem> conditionItemTree
+    ParseTreeProperty<RuleInfo> parseTree   
+    
+}
+
+RuleCompiler : +visitInit()
+RuleCompiler *-- RuleInfo
+RuleCompiler -- ComplierContext : call >
+SqlBaseVisitor <|-- RuleCompiler
+
+@enduml
