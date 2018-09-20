@@ -1,0 +1,26 @@
+@startuml
+
+
+ServiceConfig -> ApplicationConfig
+ApplicationConfig <- ReferenceConfig
+
+ServiceConfig o- MonitorConfig
+MonitorConfig -o ReferenceConfig
+
+ServiceConfig o- RegistryConfig
+RegistryConfig -o ReferenceConfig
+
+ProtocolConfig --o ServiceConfig
+
+ServiceConfig *-- MethodConfig
+ReferenceConfig *-- MethodConfig
+
+ArgumentConfig -* MethodConfig
+
+ApplicationConfig -[hidden]-> RegistryConfig 
+RegistryConfig -[hidden]-> MonitorConfig
+
+
+
+
+@enduml

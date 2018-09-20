@@ -1,5 +1,7 @@
 @startuml
 
+scale 1024*768
+
 (RuleRunner) ..> (RuleCompiler) : compile
 (sql_rule) --> (RuleCompiler) : compiled
 (dataSource) --> (RuleRunner) : request

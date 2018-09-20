@@ -1,0 +1,12 @@
+@startuml
+rectangle DataSource
+rectangle Destination
+rectangle Rule
+rectangle Verify
+
+(DataSource) -> (Destination)
+(Destination)  -> (Rule) 
+(Rule) -> (Verify)
+
+
+@enduml

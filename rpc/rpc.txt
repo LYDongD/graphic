@@ -1,0 +1,21 @@
+@startuml
+
+skinparam componentFontColor white
+
+[rpc-client] as client #Green
+[rpc-server] as server #Green
+[registry] as registry #Blue
+[monitor] as monitor #Blue
+[container] as container #blue
+
+client -[#red]> server : 4-call
+registry <.[#blue] client : 2-subscribe
+registry <.[#blue] server : 1-register
+registry ..> client : 3-notify
+client ..> monitor : 5-count
+server ..> monitor : 5-count
+server <.[#blue] container : 0-start
+
+
+
+@enduml
