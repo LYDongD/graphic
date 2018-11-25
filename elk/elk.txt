@@ -1,0 +1,30 @@
+@startuml
+
+left to right direction
+
+[filebeat-1]
+[filebeat-2]
+[filebeat-3]
+[redis/kafka]
+[logstash]
+[nginx1]
+[es-1]
+[es-2]
+[es-3]
+[kibana]
+[nginx2]
+
+[filebeat-1]-->[redis/kafka]
+[filebeat-2]-->[redis/kafka]
+[filebeat-3]-->[redis/kafka]
+[redis/kafka]-->[logstash]
+[logstash] --> [nginx1]
+[nginx1] --> [es-1]
+[nginx1] --> [es-2]
+[nginx1] --> [es-3]
+[es-1] --> [kibana]
+[es-2] --> [kibana]
+[es-3] --> [kibana]
+[kibana] <-- [nginx2]
+
+@enduml
