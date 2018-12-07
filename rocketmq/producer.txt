@@ -1,0 +1,17 @@
+@startuml
+
+participant producer
+participant namesrv
+participant broker
+
+
+producer -> producer: 1：本地获取消息路由
+producer -> namesrv: 2: 本地缓存没有路由信息时，获取消息路由信息
+namesrv --> producer: 返回路由信息
+producer -> broker: 3: 发送消息
+broker -> broker: 4: 存储发送消息
+note right: 同步/异步刷盘
+broker --> producer: 响应结果
+
+
+@enduml

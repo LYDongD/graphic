@@ -1,0 +1,25 @@
+@startuml
+
+participant DefaultMQProducer
+participant DefaultMQProducerImpl
+participant MQClientInstance
+participant MQClientAPIImpl
+participant RemotingClient
+
+DefaultMQProducer -> DefaultMQProducerImpl: send(msg:Message): SendResult
+DefaultMQProducerImpl -> DefaultMQProducerImpl: send(msg:Message): SendResult
+DefaultMQProducerImpl -> DefaultMQProducerImpl: send(msg:Message, timeout:long): SendResult
+DefaultMQProducerImpl -> DefaultMQProducerImpl: sendDefaultImpl(msg:Message, communicationMode:CommunicationMode, \nsendCallBack:SendCallBack, timeout:long): SendResult
+DefaultMQProducerImpl -> DefaultMQProducerImpl: tryToFindTopicPublishInfo(topic:string):TopicPublishInfo
+DefaultMQProducerImpl -> MQClientInstance: [本地缓存找不到则去namesrv获取]\n\
+updateTopicRouteInfoFromNameServer(topic:string):TopicPublishInfo
+MQClientInstance --> DefaultMQProducerImpl
+MQClientInstance -> MQClientAPIImpl: updateTopicRouteInfoFromNameServer(topic:string, \nisDefault:string, defaultMQProducer:DefaultMQProducer)
+MQClientAPIImpl --> MQClientInstance
+MQClientAPIImpl -> RemotingClient: invokeSync(adrr:string, request RemotingCommand, timeoutMills long)
+RemotingClient --> MQClientAPIImpl
+DefaultMQProducerImpl -> DefaultMQProducerImpl: sendKernelImpl(msg:Message, mq:MessageQueue, \ncommunicationMode:CommunicationMode, sendCallback:SendCallback, \ntopicPublishInfo:TopicPublishInfo, timeout:long) 
+
+
+
+@enduml
